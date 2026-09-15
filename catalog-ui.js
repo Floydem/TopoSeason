@@ -1,4 +1,4 @@
-// TopoSeason pack pré-test + recommandations objectifs + mode entraînement loader
+// Run&Da pack pré-test + recommandations objectifs + mode entraînement loader
 const packBase=(document.currentScript&&document.currentScript.src)?document.currentScript.src.replace(/catalog-ui\.js(?:\?.*)?$/,''):'';
-['pretest-a.css','pretest-b.css','goal-recommendations.css','training-mode.css'].forEach(file=>{const link=document.createElement('link');link.rel='stylesheet';link.href=packBase+file;document.head.appendChild(link)});
-['pretest-base.js','pretest-views.js','pretest-final.js','goal-recommendations.js','training-mode.js'].forEach(file=>{const script=document.createElement('script');script.src=packBase+file;script.async=false;document.body.appendChild(script)});
+['pretest-a.css','pretest-b.css','goal-recommendations.css','training-mode.css','runanda-brand.css'].forEach(file=>{const link=document.createElement('link');link.rel='stylesheet';link.href=packBase+file;document.head.appendChild(link)});
+['pretest-base.js','pretest-views.js','pretest-final.js','goal-recommendations.js','training-mode.js','runanda-brand.js'].forEach(file=>{const script=document.createElement('script');script.src=packBase+file;script.async=false;document.body.appendChild(script)});
