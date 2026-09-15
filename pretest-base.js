@@ -1,0 +1,15 @@
+// TopoSeason Pack pré-test — base catalogue & helpers
+seedRaces.splice(0,seedRaces.length,...regionalCatalog);
+const PRETEST_IMG={jura:IMG[1],alps:IMG[0],lake:IMG[2],road:IMG[3]};
+function dateLabel(r){const d=new Date(r.date+'T12:00:00'),base=d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});return r.verified==='estimated'?`≈ ${base} · à confirmer`:base}
+function countryLabel(r){return r.country==='FR'?'France':r.country==='CH'?'Suisse':r.country==='IT'?'Italie':''}
+function cleanCity(r){return String(r.city||'').replace(/\s*·\s*date 2027.*$/i,'').trim()}
+function placeFamily(r){const t=`${r.name||''} ${r.city||''} ${r.country||''} ${r.circuit||''}`.toLowerCase();if(/courmayeur|aoste|aosta|cervin|torx|geants|géants/.test(t))return{key:'alps',label:'VALLÉE D’AOSTE'};if(/verbier|valais|sierre|zinal|wildstrubel|montreux|dents du midi|humani/.test(t))return{key:'alps',label:'ALPES SUISSES'};if(/chamonix|mont-blanc|annecy|haute-savoie|salève/.test(t))return{key:'alps',label:'ALPES'};if(/genève|geneve|lausanne|léman|leman|neuchâtel|neuchatel|couvet|brenets|cortaillod/.test(t))return{key:'lake',label:'SUISSE ROMANDE'};if(/besançon|besancon|doubs|jura|métabief|metabief|morez|mouthe|arbois|salines|loue|reculées|reculees|jurapics|transju/.test(t))return{key:'jura',label:'MASSIF DU JURA'};return r.type==='road'?{key:'road',label:'ROUTE'}:{key:'jura',label:'TRAIL'}}
+function raceImage(r){const p=placeFamily(r);return r.photo||PRETEST_IMG[p.key]}
+function reliabilityBadge(r){if(r.verified==='confirmed')return'<span class="badge confirmed">2027 confirmé</span>';if(r.verified==='event')return'<span class="badge event">Édition 2027</span>';return'<span class="badge estimated">Date à confirmer</span>'}
+function nearBadge(r){const t=travel(r);return t&&t.min<=Number(state.profile.maxTravel||90)?'<span class="badge near">Dans ton rayon</span>':''}
+function circuitBadges(r){const c=String(r.circuit||''),o=[];if(/UTMB World Series/i.test(c))o.push('<span class="badge utmb">UTMB World Series</span>');else if(r.index||/UTMB Index/i.test(c))o.push(`<span class="badge index">UTMB Index${r.index?' '+esc(r.index):''}</span>`);if(/TORX/i.test(c))o.push('<span class="badge torx">TORX</span>');return o.join('')}
+function compactCircuit(r){if(/UTMB World Series/i.test(r.circuit||''))return'UTMB World Series';if(/TORX/i.test(r.circuit||''))return'TORX';if(r.index||/UTMB Index/i.test(r.circuit||''))return'UTMB Index';return r.circuit||''}
+function dataStatusText(r){if(r.verified==='confirmed')return'Date 2027 confirmée';if(r.verified==='event')return'Édition 2027 confirmée, détails à revalider';return'Date indicative, édition 2027 à confirmer'}
+function registrationText(r){const s=openStatus(r);return s.txt||'Ouverture non communiquée'}
+function toggleFollow(id){state.following=state.following.includes(id)?state.following.filter(x=>x!==id):[...state.following,id];save();renderAll();toast(state.following.includes(id)?'Course ajoutée à la veille':'Course retirée de la veille')}
