@@ -1,1 +1,1 @@
-{"name":"TopoSeason Beta","short_name":"TopoSeason","start_url":"./","display":"standalone","background_color":"#f6f7f3","theme_color":"#155b43","description":"Planifie ta saison de course, trouve et surveille tes prochaines épreuves.","icons":[]}
+{"name":"Run&Da Beta","short_name":"Run&Da","start_url":"./","display":"standalone","background_color":"#F5F8FB","theme_color":"#08BCEB","description":"Planifie ta saison, trouve tes courses et suis tes entraînements avec Run&Da.","icons":[{"src":"runanda-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
