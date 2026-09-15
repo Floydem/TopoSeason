@@ -1,4 +1,4 @@
-// TopoSeason pack pre-test loader
+// TopoSeason pack pré-test + mode entraînement loader
 const packBase=(document.currentScript&&document.currentScript.src)?document.currentScript.src.replace(/catalog-ui\.js(?:\?.*)?$/,''):'';
-['pretest-a.css','pretest-b.css'].forEach(file=>{const link=document.createElement('link');link.rel='stylesheet';link.href=packBase+file;document.head.appendChild(link)});
-['pretest-base.js','pretest-views.js','pretest-final.js'].forEach(file=>{const script=document.createElement('script');script.src=packBase+file;script.async=false;document.body.appendChild(script)});
+['pretest-a.css','pretest-b.css','training-mode.css'].forEach(file=>{const link=document.createElement('link');link.rel='stylesheet';link.href=packBase+file;document.head.appendChild(link)});
+['pretest-base.js','pretest-views.js','pretest-final.js','training-mode.js'].forEach(file=>{const script=document.createElement('script');script.src=packBase+file;script.async=false;document.body.appendChild(script)});
