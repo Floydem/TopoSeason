@@ -1,161 +1,23 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0d1815" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>TopoSeason — Planifie ta saison</title>
-  <meta name="description" content="Planifie ta saison de course, trouve les épreuves qui te correspondent et surveille l'ouverture des inscriptions." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="topo-bg" aria-hidden="true"></div>
-  <div class="app-shell">
-    <header class="topbar">
-      <button class="brand" data-go="season" aria-label="Accueil TopoSeason">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 56 56"><path d="M7 39 18 20l8 10 8-18 15 27"/><path d="M11 43c9-4 18-3 26 0 5 2 9 1 12-1"/></svg>
-        </span>
-        <span><b>TOPO</b><em>SEASON</em></span>
-      </button>
-      <div class="top-actions">
-        <span class="demo-pill">DÉMO V1</span>
-        <button class="icon-btn" id="notifBtn" aria-label="Notifications"><span class="dot"></span>
-          <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
-        </button>
-      </div>
-    </header>
-
-    <main id="mainContent">
-      <section class="view active" id="seasonView" data-view="season">
-        <div class="hero-block">
-          <div>
-            <p class="eyebrow">SAISON SPORTIVE</p>
-            <h1>Construis ton<br><span>année de course.</span></h1>
-            <p class="hero-copy">Pose tes objectifs. On rapproche les courses qui collent à tes dates, distances et contraintes de déplacement.</p>
-          </div>
-          <div class="year-switcher" aria-label="Année de la saison">
-            <button id="prevYear">‹</button><strong id="yearLabel">2027</strong><button id="nextYear">›</button>
-          </div>
-        </div>
-
-        <div class="season-summary" id="seasonSummary"></div>
-
-        <div class="section-head">
-          <div><p class="eyebrow">FEUILLE DE ROUTE</p><h2>Ma saison</h2></div>
-          <button class="text-btn" id="addGoalTop">+ OBJECTIF</button>
-        </div>
-        <div class="timeline" id="timeline"></div>
-      </section>
-
-      <section class="view" id="exploreView" data-view="explore">
-        <div class="page-head">
-          <p class="eyebrow">DÉCOUVRIR</p>
-          <h1>Des courses qui<br><span>collent à ta saison.</span></h1>
-        </div>
-        <div class="search-panel">
-          <div class="searchbox">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-            <input id="raceSearch" type="search" placeholder="Nom, ville, type de course…" />
-          </div>
-          <div class="filters" id="filters">
-            <button class="filter active" data-filter="all">Toutes</button>
-            <button class="filter" data-filter="index">Index</button>
-            <button class="filter" data-filter="classic">Classiques</button>
-            <button class="filter" data-filter="road">Route</button>
-            <button class="filter" data-filter="trail">Trail</button>
-          </div>
-        </div>
-        <div class="disclaimer-line"><span></span> Données de démonstration pour tester le parcours V1</div>
-        <div class="race-grid" id="raceGrid"></div>
-      </section>
-
-      <section class="view" id="watchView" data-view="watch">
-        <div class="page-head">
-          <p class="eyebrow">VEILLE</p>
-          <h1>Ne rate plus<br><span>une ouverture.</span></h1>
-          <p>Les courses que tu suis apparaissent ici. Dans la version connectée, TopoSeason vérifiera automatiquement les changements d'inscription.</p>
-        </div>
-        <div class="watch-stats" id="watchStats"></div>
-        <div class="watch-list" id="watchList"></div>
-      </section>
-
-      <section class="view" id="profileView" data-view="profile">
-        <div class="page-head">
-          <p class="eyebrow">PROFIL COUREUR</p>
-          <h1>Réglages de<br><span>recherche.</span></h1>
-        </div>
-        <div class="settings-card">
-          <div class="setting-row">
-            <div class="setting-icon">⌖</div>
-            <div class="setting-main"><strong>Point de départ</strong><span id="locationLabel">Position non définie</span></div>
-            <button class="small-btn" id="geoBtn">Me localiser</button>
-          </div>
-          <div class="setting-row range-row">
-            <div class="setting-icon">↗</div>
-            <div class="setting-main"><strong>Rayon par défaut</strong><span><b id="radiusLabel">90</b> min de route</span></div>
-            <input id="radiusRange" type="range" min="30" max="240" step="15" value="90" />
-          </div>
-          <div class="setting-row">
-            <div class="setting-icon">△</div>
-            <div class="setting-main"><strong>Préférence trail</strong><span>Mettre les courses Index en avant</span></div>
-            <label class="switch"><input id="indexPref" type="checkbox" checked><span></span></label>
-          </div>
-          <div class="setting-row">
-            <div class="setting-icon">↯</div>
-            <div class="setting-main"><strong>Alertes d'inscription</strong><span>Notifications d'ouverture et préinscription</span></div>
-            <label class="switch"><input id="alertPref" type="checkbox" checked><span></span></label>
-          </div>
-        </div>
-
-        <div class="coming-card">
-          <span class="coming-tag">V2</span>
-          <h3>Ta forme prendra le relais.</h3>
-          <p>Import FIT / GPX, connexion Garmin et analyse de préparation pour challenger ou ajuster tes objectifs.</p>
-          <div class="elevation-mini" aria-hidden="true"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><path d="M0 90 40 78 74 82 112 53 145 61 180 27 208 50 250 18 293 46 332 31 366 60 400 39"/></svg></div>
-        </div>
-      </section>
-    </main>
-
-    <nav class="bottom-nav" aria-label="Navigation principale">
-      <button class="nav-item active" data-nav="season"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg><span>Saison</span></button>
-      <button class="nav-item" data-nav="explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Explorer</span></button>
-      <button class="nav-item" data-nav="watch"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span>Veille</span></button>
-      <button class="nav-item" data-nav="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.5-5 3.5-7 8-7s7.5 2 8 7"/></svg><span>Profil</span></button>
-    </nav>
-  </div>
-
-  <dialog id="goalDialog" class="sheet-dialog">
-    <form method="dialog" id="goalForm">
-      <div class="sheet-grab"></div>
-      <div class="sheet-head"><div><p class="eyebrow">NOUVEL OBJECTIF</p><h2>Place un dossard dans ta saison.</h2></div><button class="close-btn" value="cancel" aria-label="Fermer">×</button></div>
-      <div class="form-grid">
-        <label><span>Type</span><select id="goalType"><option>Trail</option><option>10 km</option><option>Semi-marathon</option><option>Marathon</option><option>Ultra trail</option></select></label>
-        <label><span>Mois</span><select id="goalMonth"></select></label>
-        <label><span>Distance min</span><div class="unit-input"><input id="goalMin" type="number" min="1" value="25"><em>km</em></div></label>
-        <label><span>Distance max</span><div class="unit-input"><input id="goalMax" type="number" min="1" value="35"><em>km</em></div></label>
-        <label><span>Fenêtre</span><select id="goalWindow"><option value="month">Tout le mois</option><option value="early">Début du mois</option><option value="mid">Autour du 15</option><option value="late">Fin du mois</option></select></label>
-        <label><span>Déplacement max.</span><select id="goalTravel"><option value="45">45 min</option><option value="60">1 h</option><option value="90" selected>1 h 30</option><option value="120">2 h</option><option value="180">3 h</option></select></label>
-      </div>
-      <fieldset class="index-choice"><legend>Préférence Index</legend>
-        <label><input type="radio" name="index" value="any"><span><b>Peu importe</b><small>Inclure toutes les courses</small></span></label>
-        <label><input type="radio" name="index" value="prefer" checked><span><b>En priorité</b><small>Les courses Index remontent</small></span></label>
-        <label><input type="radio" name="index" value="required"><span><b>Obligatoire</b><small>Masquer les autres trails</small></span></label>
-      </fieldset>
-      <button class="primary-btn" id="saveGoal" value="default">AJOUTER À MA SAISON <span>↗</span></button>
-    </form>
-  </dialog>
-
-  <dialog id="raceDialog" class="race-dialog">
-    <div id="raceDetail"></div>
-  </dialog>
-
-  <div class="toast" id="toast" role="status"></div>
-  <script src="app.js"></script>
-</body>
-</html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f3"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>TopoSeason Beta</title><meta name="description" content="Planifie ta saison, trouve et surveille tes prochaines courses.">
+<link rel="manifest" href="manifest.json"><link rel="stylesheet" href="styles-v2.css">
+</head><body><div class="app">
+<header class="topbar"><button class="brand" data-go="season"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 38 17 15l7 10 7-16 13 29H4Z" fill="#155b43"/><path d="M14 38 25 21l7 17" fill="#6aa98c"/></svg><span>Topo<b>Season</b></span></button><div class="actions"><button class="round" id="shareBtn" aria-label="Partager"><svg viewBox="0 0 24 24"><path d="M12 16V3m0 0L8 7m4-4 4 4M5 11v9h14v-9"/></svg></button><button class="round" id="notifBtn" aria-label="Notifications"><span class="notify-dot"></span><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 6-3 7-3 9h18c0-2-3-3-3-9M10 21h4"/></svg></button></div></header>
+<main>
+<section class="view active" id="seasonView"><div class="month-strip" id="months"></div><div class="hero" id="hero"></div><div class="section"><div class="section-head"><h2>Courses recommandées</h2><button class="linkbtn" data-go="explore">Voir toutes ›</button></div><div class="cards2" id="recommended"></div></div><div class="section"><div class="section-head"><h2>Veille inscriptions</h2><button class="linkbtn" data-go="watch">Voir toutes ›</button></div><div id="watchPreview"></div></div></section>
+<section class="view" id="exploreView"><div class="page-title"><span class="eyebrow">Trouver sa prochaine aventure</span><h1>Explorer</h1><p>Le catalogue est encore en mode bêta. Les dates et statuts fournis servent à tester l’expérience avant le branchement aux sources officielles.</p></div><div class="search"><input id="searchInput" placeholder="Nom, ville, distance…"><button class="btn primary" id="customRaceBtn">+ Course</button></div><div class="chips" id="chips"><button class="chip active" data-filter="all">Toutes</button><button class="chip" data-filter="trail">Trail</button><button class="chip" data-filter="road">Route</button><button class="chip" data-filter="index">UTMB Index</button><button class="chip" data-filter="near">Dans mon rayon</button></div><div class="race-list" id="raceList"></div></section>
+<section class="view" id="watchView"><div class="page-title"><span class="eyebrow">Suivi personnel</span><h1>Veille</h1><p>Suis les courses qui t’intéressent, marque celles où tu es inscrit et retrouve les ouvertures à venir.</p></div><div class="watch-list" id="watchList"></div></section>
+<section class="view" id="profileView"><div class="page-title"><span class="eyebrow">Réglages de la bêta</span><h1>Profil</h1><p>Pas de compte serveur : tes informations restent sur cet appareil. Tu peux les exporter pour les sauvegarder ou les transférer.</p></div><div class="settings"><div class="setting"><label>Prénom</label><input type="text" id="nameInput" placeholder="Ex. Éric"></div><div class="setting"><label>Point de départ</label><p id="locationText">Position non définie. La géolocalisation reste sur ton appareil.</p><button class="btn primary" id="geoBtn">Utiliser ma position</button></div><div class="setting"><label>Temps de trajet maximum</label><div class="range-line"><input type="range" id="travelRange" min="30" max="240" step="15"><b id="travelLabel"></b></div><p>TopoSeason estime gratuitement le trajet à partir de la distance à vol d’oiseau. Ce n’est pas encore un calcul routier réel.</p></div><div class="setting"><label>Préférence UTMB Index</label><select id="indexSelect"><option value="prefer">Les mettre en avant</option><option value="required">Uniquement Index pour mes trails</option><option value="any">Peu importe</option></select></div><div class="setting"><label>Données & partage</label><div class="profile-actions"><button class="btn secondary" id="exportBtn">Exporter mes données</button><button class="btn secondary" id="importBtn">Importer</button><button class="btn secondary" id="feedbackBtn">Donner mon avis</button><button class="btn outline" id="resetBtn">Réinitialiser</button></div><input type="file" id="importFile" accept="application/json" hidden></div></div><div class="beta-note"><b>Bêta sans IA, sans compte et sans base payante.</b><p>Objectifs, favoris, inscriptions, préférences et feedback sont stockés dans le navigateur. Une future version pourra synchroniser ces données dans le cloud, mais ce n’est pas nécessaire pour tester le concept auprès de tes collègues.</p></div></section>
+</main>
+<nav class="bottomnav"><button class="nav active" data-go="season"><svg viewBox="0 0 24 24"><path d="M4 20V10m6 10V4m6 16v-7m4 7V7"/></svg>Saison</button><button class="nav" data-go="explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Explorer</button><button class="nav" data-go="watch"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 6-3 7-3 9h18c0-2-3-3-3-9M10 21h4"/></svg>Veille</button><button class="nav" data-go="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg>Profil</button></nav>
+</div>
+<dialog id="goalDialog"><form class="modal" id="goalForm"><div class="modal-head"><div><span class="eyebrow">Objectif de saison</span><h2 id="goalTitle">Ajouter un objectif</h2></div><button type="button" class="x" data-close>×</button></div><input id="goalId" type="hidden"><div class="formgrid"><div class="field"><label>Type</label><select id="goalType"><option>Trail</option><option>10 km</option><option>Semi-marathon</option><option>Marathon</option><option>Ultra trail</option></select></div><div class="field"><label>Mois</label><select id="goalMonth"></select></div><div class="field"><label>Distance min (km)</label><input id="goalMin" type="number" min="1" value="20"></div><div class="field"><label>Distance max (km)</label><input id="goalMax" type="number" min="1" value="35"></div><div class="field"><label>Fenêtre</label><select id="goalWindow"><option value="month">Tout le mois</option><option value="early">Début du mois</option><option value="mid">Milieu du mois</option><option value="late">Fin du mois</option></select></div><div class="field"><label>Trajet max (min)</label><input id="goalTravel" type="number" min="15" value="90"></div><div class="field"><label>Index</label><select id="goalIndex"><option value="prefer">Préféré</option><option value="required">Obligatoire</option><option value="any">Peu importe</option></select></div><div class="field"><label>Priorité</label><select id="goalPriority"><option value="main">Objectif principal</option><option value="normal">Objectif secondaire</option></select></div></div><button class="btn primary" type="submit">Enregistrer l’objectif</button></form></dialog>
+<dialog id="raceDialog"><div class="modal" id="raceDetail"></div></dialog>
+<dialog id="customDialog"><form class="modal" id="customForm"><div class="modal-head"><div><span class="eyebrow">Catalogue personnel</span><h2>Ajouter une course</h2></div><button type="button" class="x" data-close>×</button></div><div class="formgrid"><div class="field"><label>Nom</label><input id="crName" required></div><div class="field"><label>Ville</label><input id="crCity" required></div><div class="field"><label>Date</label><input id="crDate" type="date" required></div><div class="field"><label>Type</label><select id="crType"><option value="trail">Trail</option><option value="road">Route</option></select></div><div class="field"><label>Distance km</label><input id="crDistance" type="number" min="1" required></div><div class="field"><label>D+ mètres</label><input id="crElev" type="number" min="0" value="0"></div><div class="field"><label>UTMB Index</label><select id="crIndex"><option value="">Non / inconnu</option><option value="20K">20K</option><option value="50K">50K</option><option value="100K">100K</option><option value="100M">100M</option></select></div><div class="field"><label>Ouverture inscriptions</label><input id="crOpen" type="date"></div></div><button class="btn primary" type="submit">Ajouter au catalogue local</button></form></dialog>
+<dialog id="feedbackDialog"><form class="modal" id="feedbackForm"><div class="modal-head"><div><span class="eyebrow">Bêta test</span><h2>Ton avis</h2></div><button type="button" class="x" data-close>×</button></div><div class="field"><label>Note / 5</label><select id="fbRating"><option value="5">5 - Excellent</option><option value="4">4 - Très bien</option><option value="3">3 - Correct</option><option value="2">2 - À améliorer</option><option value="1">1 - Pas convaincu</option></select></div><div class="field" style="margin-top:10px"><label>Commentaire</label><textarea id="fbText" placeholder="Ce qui est clair, ce qui manque, ce qui t'agace..."></textarea></div><button class="btn primary" type="submit">Enregistrer et partager</button></form></dialog>
+<div class="toast" id="toast"></div>
+<script src="app-v2.js"></script></body></html>
