@@ -1,3 +1,4 @@
 // TopoSeason pack pre-test loader
-['pretest-a.css','pretest-b.css'].forEach(href=>{const l=document.createElement('link');l.rel='stylesheet';l.href=href;document.head.appendChild(l)});
-['pretest-base.js','pretest-views.js','pretest-final.js'].forEach(src=>{const s=document.createElement('script');s.src=src;s.async=false;document.body.appendChild(s)});
+const packBase=(document.currentScript&&document.currentScript.src)?document.currentScript.src.replace(/catalog-ui\.js(?:\?.*)?$/,''):'';
+['pretest-a.css','pretest-b.css'].forEach(file=>{const link=document.createElement('link');link.rel='stylesheet';link.href=packBase+file;document.head.appendChild(link)});
+['pretest-base.js','pretest-views.js','pretest-final.js'].forEach(file=>{const script=document.createElement('script');script.src=packBase+file;script.async=false;document.body.appendChild(script)});
