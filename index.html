@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1815" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>TopoSeason — Planifie ta saison</title>
+  <meta name="description" content="Planifie ta saison de course, trouve les épreuves qui te correspondent et surveille l'ouverture des inscriptions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="topo-bg" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" data-go="season" aria-label="Accueil TopoSeason">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 56 56"><path d="M7 39 18 20l8 10 8-18 15 27"/><path d="M11 43c9-4 18-3 26 0 5 2 9 1 12-1"/></svg>
+        </span>
+        <span><b>TOPO</b><em>SEASON</em></span>
+      </button>
+      <div class="top-actions">
+        <span class="demo-pill">DÉMO V1</span>
+        <button class="icon-btn" id="notifBtn" aria-label="Notifications"><span class="dot"></span>
+          <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="mainContent">
+      <section class="view active" id="seasonView" data-view="season">
+        <div class="hero-block">
+          <div>
+            <p class="eyebrow">SAISON SPORTIVE</p>
+            <h1>Construis ton<br><span>année de course.</span></h1>
+            <p class="hero-copy">Pose tes objectifs. On rapproche les courses qui collent à tes dates, distances et contraintes de déplacement.</p>
+          </div>
+          <div class="year-switcher" aria-label="Année de la saison">
+            <button id="prevYear">‹</button><strong id="yearLabel">2027</strong><button id="nextYear">›</button>
+          </div>
+        </div>
+
+        <div class="season-summary" id="seasonSummary"></div>
+
+        <div class="section-head">
+          <div><p class="eyebrow">FEUILLE DE ROUTE</p><h2>Ma saison</h2></div>
+          <button class="text-btn" id="addGoalTop">+ OBJECTIF</button>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <section class="view" id="exploreView" data-view="explore">
+        <div class="page-head">
+          <p class="eyebrow">DÉCOUVRIR</p>
+          <h1>Des courses qui<br><span>collent à ta saison.</span></h1>
+        </div>
+        <div class="search-panel">
+          <div class="searchbox">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="raceSearch" type="search" placeholder="Nom, ville, type de course…" />
+          </div>
+          <div class="filters" id="filters">
+            <button class="filter active" data-filter="all">Toutes</button>
+            <button class="filter" data-filter="index">Index</button>
+            <button class="filter" data-filter="classic">Classiques</button>
+            <button class="filter" data-filter="road">Route</button>
+            <button class="filter" data-filter="trail">Trail</button>
+          </div>
+        </div>
+        <div class="disclaimer-line"><span></span> Données de démonstration pour tester le parcours V1</div>
+        <div class="race-grid" id="raceGrid"></div>
+      </section>
+
+      <section class="view" id="watchView" data-view="watch">
+        <div class="page-head">
+          <p class="eyebrow">VEILLE</p>
+          <h1>Ne rate plus<br><span>une ouverture.</span></h1>
+          <p>Les courses que tu suis apparaissent ici. Dans la version connectée, TopoSeason vérifiera automatiquement les changements d'inscription.</p>
+        </div>
+        <div class="watch-stats" id="watchStats"></div>
+        <div class="watch-list" id="watchList"></div>
+      </section>
+
+      <section class="view" id="profileView" data-view="profile">
+        <div class="page-head">
+          <p class="eyebrow">PROFIL COUREUR</p>
+          <h1>Réglages de<br><span>recherche.</span></h1>
+        </div>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-icon">⌖</div>
+            <div class="setting-main"><strong>Point de départ</strong><span id="locationLabel">Position non définie</span></div>
+            <button class="small-btn" id="geoBtn">Me localiser</button>
+          </div>
+          <div class="setting-row range-row">
+            <div class="setting-icon">↗</div>
+            <div class="setting-main"><strong>Rayon par défaut</strong><span><b id="radiusLabel">90</b> min de route</span></div>
+            <input id="radiusRange" type="range" min="30" max="240" step="15" value="90" />
+          </div>
+          <div class="setting-row">
+            <div class="setting-icon">△</div>
+            <div class="setting-main"><strong>Préférence trail</strong><span>Mettre les courses Index en avant</span></div>
+            <label class="switch"><input id="indexPref" type="checkbox" checked><span></span></label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-icon">↯</div>
+            <div class="setting-main"><strong>Alertes d'inscription</strong><span>Notifications d'ouverture et préinscription</span></div>
+            <label class="switch"><input id="alertPref" type="checkbox" checked><span></span></label>
+          </div>
+        </div>
+
+        <div class="coming-card">
+          <span class="coming-tag">V2</span>
+          <h3>Ta forme prendra le relais.</h3>
+          <p>Import FIT / GPX, connexion Garmin et analyse de préparation pour challenger ou ajuster tes objectifs.</p>
+          <div class="elevation-mini" aria-hidden="true"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><path d="M0 90 40 78 74 82 112 53 145 61 180 27 208 50 250 18 293 46 332 31 366 60 400 39"/></svg></div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navigation principale">
+      <button class="nav-item active" data-nav="season"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg><span>Saison</span></button>
+      <button class="nav-item" data-nav="explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Explorer</span></button>
+      <button class="nav-item" data-nav="watch"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span>Veille</span></button>
+      <button class="nav-item" data-nav="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.5-5 3.5-7 8-7s7.5 2 8 7"/></svg><span>Profil</span></button>
+    </nav>
+  </div>
+
+  <dialog id="goalDialog" class="sheet-dialog">
+    <form method="dialog" id="goalForm">
+      <div class="sheet-grab"></div>
+      <div class="sheet-head"><div><p class="eyebrow">NOUVEL OBJECTIF</p><h2>Place un dossard dans ta saison.</h2></div><button class="close-btn" value="cancel" aria-label="Fermer">×</button></div>
+      <div class="form-grid">
+        <label><span>Type</span><select id="goalType"><option>Trail</option><option>10 km</option><option>Semi-marathon</option><option>Marathon</option><option>Ultra trail</option></select></label>
+        <label><span>Mois</span><select id="goalMonth"></select></label>
+        <label><span>Distance min</span><div class="unit-input"><input id="goalMin" type="number" min="1" value="25"><em>km</em></div></label>
+        <label><span>Distance max</span><div class="unit-input"><input id="goalMax" type="number" min="1" value="35"><em>km</em></div></label>
+        <label><span>Fenêtre</span><select id="goalWindow"><option value="month">Tout le mois</option><option value="early">Début du mois</option><option value="mid">Autour du 15</option><option value="late">Fin du mois</option></select></label>
+        <label><span>Déplacement max.</span><select id="goalTravel"><option value="45">45 min</option><option value="60">1 h</option><option value="90" selected>1 h 30</option><option value="120">2 h</option><option value="180">3 h</option></select></label>
+      </div>
+      <fieldset class="index-choice"><legend>Préférence Index</legend>
+        <label><input type="radio" name="index" value="any"><span><b>Peu importe</b><small>Inclure toutes les courses</small></span></label>
+        <label><input type="radio" name="index" value="prefer" checked><span><b>En priorité</b><small>Les courses Index remontent</small></span></label>
+        <label><input type="radio" name="index" value="required"><span><b>Obligatoire</b><small>Masquer les autres trails</small></span></label>
+      </fieldset>
+      <button class="primary-btn" id="saveGoal" value="default">AJOUTER À MA SAISON <span>↗</span></button>
+    </form>
+  </dialog>
+
+  <dialog id="raceDialog" class="race-dialog">
+    <div id="raceDetail"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
